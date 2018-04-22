@@ -2,4 +2,5 @@
     <string name="app_name">Voting App</string>
     <string name="polls">Polls</string>
     <string name="profile">Profile</string>
+    <string name="error_msg">ERROR RETRIEVING INFORMATION</string>
 </resources>
