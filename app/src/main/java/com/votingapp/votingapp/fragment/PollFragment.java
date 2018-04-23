@@ -1,8 +1,10 @@
 package com.votingapp.votingapp.fragment;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,12 +30,15 @@ public class PollFragment extends Fragment {
     private final String TAG = "PollFragment";
     private final int REFRESH_DELAY = 1;
 
+    private ArrayList<Integer> colors = new ArrayList<Integer>();
+
     private LinearLayout pollContainer;
     private PullToRefreshView mPullToRefreshView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initColorList();
     }
 
     @Nullable
@@ -143,6 +148,25 @@ public class PollFragment extends Fragment {
         return pieData;
     }
 
+    private void initColorList() {
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+    }
+
     private PieDataSet buildPieDataSet(Poll poll, String label) {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
@@ -156,7 +180,7 @@ public class PollFragment extends Fragment {
 
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        dataSet.setColors(colors);
 
         return dataSet;
     }
