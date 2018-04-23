@@ -1,20 +1,14 @@
 package com.votingapp.votingapp.fragment;
 
 import android.graphics.Color;
-import android.graphics.LinearGradient;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -25,14 +19,17 @@ import com.votingapp.votingapp.R;
 import com.votingapp.votingapp.manager.ServerManager;
 import com.votingapp.votingapp.model.Poll;
 import com.votingapp.votingapp.model.PollCollection;
+import com.yalantis.phoenix.PullToRefreshView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PollFragment extends Fragment {
     private final String TAG = "PollFragment";
+    private final int REFRESH_DELAY = 1;
 
     private LinearLayout pollContainer;
+    private PullToRefreshView mPullToRefreshView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +41,8 @@ public class PollFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.poll_fragment_view, container, false);
 
-        setupPollContainer(view);
+        initPollContainer(view);
+        initPullToRefresh(view);
 
         return view;
     }
@@ -56,15 +54,36 @@ public class PollFragment extends Fragment {
         setup();
     }
 
+    private void initPullToRefresh(View view) {
+        mPullToRefreshView = view.findViewById(R.id.pull_to_refresh);
+        mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPullToRefreshView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getPollsFromServer();
+
+                        mPullToRefreshView.setRefreshing(false);
+                    }
+                }, REFRESH_DELAY);
+            }
+        });
+    }
+
     private void setup() {
         if (PollCollection.getInstance().getPolls() != null) {
             populatePollContainer();
         } else {
-            ServerManager.getAllPolls(
-                    getActivity(),
-                    this::responseSetup
-            );
+            getPollsFromServer();
         }
+    }
+
+    private void getPollsFromServer() {
+        ServerManager.getAllPolls(
+                getActivity(),
+                this::responseSetup
+        );
     }
 
     private void responseSetup(List<Poll> polls) {
@@ -72,7 +91,7 @@ public class PollFragment extends Fragment {
         populatePollContainer();
     }
 
-    private void setupPollContainer(View view) {
+    private void initPollContainer(View view) {
        pollContainer = view.findViewById(R.id.list_of_polls_container);
     }
 

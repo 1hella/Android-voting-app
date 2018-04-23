@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView android:layout_width="match_parent"
+<com.yalantis.phoenix.PullToRefreshView
+    android:id="@+id/pull_to_refresh"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <LinearLayout
-            android:id="@+id/list_of_polls_container"
-            android:divider="@drawable/divider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:showDividers="middle"
-            android:dividerPadding="5dp"
-            android:orientation="vertical" />
-</ScrollView>
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <LinearLayout
+                android:id="@+id/list_of_polls_container"
+                android:divider="@drawable/divider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:showDividers="middle"
+                android:dividerPadding="5dp"
+                android:orientation="vertical" />
+    </ScrollView>
+</com.yalantis.phoenix.PullToRefreshView>
+

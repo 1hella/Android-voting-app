@@ -41,4 +41,6 @@ dependencies {
     compile 'com.bigscreen:iconic-tab-bar:1.0.5'
     //MPAndroidChart
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    //Phoenix Pull-to-Refresh
+    compile 'com.yalantis:phoenix:1.2.3'
 }
